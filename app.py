@@ -6,6 +6,10 @@ import numpy as np
 from PIL import Image
 from flask_cors import CORS
 
+from db import user #to insert user data in db
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
 # Flask app
 app = Flask(__name__)
 CORS(app)  # allow requests from React dev server 
@@ -67,6 +71,28 @@ def upload_image():
         })
 
     return jsonify({"error": "Invalid file type"}), 400
+
+@app.route("/register", methods=["POST"])
+def register():
+    data= request.get_json()
+    email=data.get("email")
+    name=data.get("name")
+    pwd=data.get("password")
+    if(not email or not name or not pwd):
+        return jsonify({"message": "fill correctly"}), 400
+    
+    isexist= user.find_one({"email":email})
+    if(isexist):
+        return jsonify({"message":"please login"}), 409
+    hashedpwd= generate_password_hash(pwd)
+    user.insert_one({"name":name, "email": email, "pwd":hashedpwd})
+    
+    
+    print(data)
+    return jsonify({"message": "Register successful"}), 200
+ 
+    
+
 
 if __name__ == '__main__':
     app.run(debug=True)

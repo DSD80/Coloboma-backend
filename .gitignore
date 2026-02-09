@@ -1,2 +1,3 @@
 venv
 model/coloboma_detector.h5
+.env
