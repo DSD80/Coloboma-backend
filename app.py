@@ -19,7 +19,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 # Load trained model
-MODEL_PATH = os.path.join('model', 'coloboma_prj.tflite')
+MODEL_PATH = os.path.join('model', 'inception_coloboma_model.h5')
 model = tf.keras.models.load_model(MODEL_PATH)
 
 # Helper: check allowed file type
